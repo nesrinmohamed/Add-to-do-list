@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React , {useState} from 'react'
+import TodoForm from './Componetnts/TodoForm'
+import TodoItem from './Componetnts/TodoItem'
+import './App.css'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [todos , setTodos] =useState([])
+
+    const addTodo = (text) =>{
+    let id = 1
+    if(todos.length > 0){
+    id = todos[0].id + 1
+    }
+    let todo = {id:id , text:text , complated:false}
+    let newTodos =[todo , ...todos]
+    console.log(newTodos)
+    setTodos(newTodos)
+    }
+const removeTodo = (id) => {
+let todoFilter = [...todos].filter((todo) => todo.id !== id)
+setTodos(todoFilter)
 }
 
-export default App;
+const completeHandler = (id) =>{
+    // console.log(id)
+let checkItem = todos.map((todo) => {
+if(todo.id === id){
+todo.completed = !todo.completed
+}
+return todo
+} )
+setTodos(checkItem)
+}
+  return (
+    <div className='todo-list'>
+        <h2>Todo List</h2>
+      <TodoForm  addTodo={addTodo}/>
+      {todos.map((todo) =>(
+        
+        <TodoItem key={todo.id} todo={todo} completeHandler={completeHandler} removeTodo={removeTodo}/>
+        ))}
+    </div>
+  )
+}
+
+export default App
