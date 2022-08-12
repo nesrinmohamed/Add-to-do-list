@@ -1,10 +1,17 @@
-import React , {useState} from 'react'
+import React , {useState , useEffect} from 'react'
 import TodoForm from './Componetnts/TodoForm'
 import TodoItem from './Componetnts/TodoItem'
 import './App.css'
 
 function App() {
-    const [todos , setTodos] =useState([])
+    const [todos , setTodos] =useState(
+      JSON.parse(localStorage.getItem('Todos')) ?? [],
+
+      )
+
+      useEffect(() => {
+        localStorage.setItem('Todos', JSON.stringify(todos));
+    }, [todos]);
 
     const addTodo = (text) =>{
     let id = 1
